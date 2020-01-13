@@ -1,41 +1,57 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Header from './components/Header'
 import Form from './components/Form';
 import Error from './components/Error';
+import Weather from './components/Weather';
+import axios from 'axios';
 
 function App() {
-  
+  let component;
   const [search, saveSearch] = useState({
-    city: "",
-    country: "",
+    latitude: "",
+    longitude: "",
     error: false,
+    result: {}
   });
 
+  useEffect(() => {
+    if ((search.latitude === null || search.latitude === undefined || (search.latitude === '' ) 
+    || (search.longitude === null || search.longitude === undefined || search.longitude === ''))) {
+      return;
+    }
+    const retrieveWeatherApiInformation =  async() => {
+      const token = '0fdbd6d8806e2911648fdd7cca76599e';
+      const proxyurl = "https://cors-anywhere.herokuapp.com/";
+      const url = `https://api.darksky.net/forecast/${token}/${search.latitude},${search.longitude}`;
+      let response = await  axios.get(proxyurl+url);
+      console.log(response.data.timezone);
+      response = response.data.timezone ;
+      saveSearch({result: {response}});
+      
+    }
+    retrieveWeatherApiInformation();
+  }, [search.latitude, search.longitudex]);
+
   const informationRetrieve = information => {
-    if (information.city === '' || information.country === '') {
+    if ((information.longitude === null || information.longitude=== undefined || (information.longitude === '' ) 
+    || (information.latitude === null || information.latitude === undefined || information.latitude === ''))) {
       saveSearch({error: true});
       return;
     }
-    saveSearch({city: information.city, country: information.country, error: false});
+    saveSearch({longitude: information.longitude, latitude: information.latitude, error: false});
   }
 
-  const retrieveWeatherApiInformation =  async() => {
-    if (search.country === '' || search.city === '') {
-      return;
-    }
-    const token = '';
-    const url = `http://api.openweathermap.org/data/2.5/weather?q=${search.city},${search.country}&APPID=${token}`;
-    let response = await fetch(url);
-    let responseJSONObject = await response.json();
-  }
-
-  let component;
   if(search.error) {
     component = <Error
       message = {'Please, include a country and a city!'}
-    />
+    />;
   } else {
-    retrieveWeatherApiInformation();
+    if(search.result != undefined){
+    console.log('xuxa', search.result);
+    component = <Weather
+      result = {search.result}
+    />
+    }
   }
 
   return (

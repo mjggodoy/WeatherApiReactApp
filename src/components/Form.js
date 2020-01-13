@@ -4,8 +4,8 @@ import React, {useState} from 'react';
 function Form({informationRetrieve}){   
     
     const [search, saveSearch] = useState({
-        city: "",
-        country: ""
+        latitude: "",
+        longitude: ""
     });
 
     const handleChange = e => {
@@ -23,21 +23,13 @@ function Form({informationRetrieve}){
             onSubmit = {retrieveWeather}
         >
             <div className="input-field col s12">
-                <input type="text" name="city" onChange={handleChange}/>
-                <label htmlFor="city">City</label>
+                <input type="number" name="latitude" onChange={handleChange}/>
+                <label htmlFor="latitude">Longitude</label>
             </div>
             
             <div className="input-field col s12">
-                <select name="country" onChange={handleChange}>
-                    <option value="">Select a country...</option>
-                    <option value="US">US</option>
-                    <option value="MX">Mexico</option>
-                    <option value="ES">Spain</option>
-                    <option value="UK">United Kingdom</option>
-                    <option value="FR">France</option>
-                    <option value="IT">Italy</option>
-                    <option value="GE">Germany</option>
-                </select>
+                <input type="number" name="longitude" onChange={handleChange}/>
+                <label htmlFor="longitude">Latitude</label>
             </div>
             <div className="input-field col s12">
                 <input type="submit" className="waves-effect waves-light btn-large btn-block yellow accent-4" value="GET WEATHER"></input>
