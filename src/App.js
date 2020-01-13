@@ -11,7 +11,8 @@ function App() {
     latitude: "",
     longitude: "",
     error: false,
-    result: {}
+    timezone: {},
+    currently: {},
   });
 
   useEffect(() => {
@@ -24,13 +25,16 @@ function App() {
       const proxyurl = "https://cors-anywhere.herokuapp.com/";
       const url = `https://api.darksky.net/forecast/${token}/${search.latitude},${search.longitude}`;
       let response = await  axios.get(proxyurl+url);
-      console.log(response.data.timezone);
-      response = response.data.timezone ;
-      saveSearch({result: {response}});
-      
+      let currently = response.data.currently;
+      response = response.data.timezone;
+      saveSearch(search => ({ 
+        ...search,
+        timezone: {response},
+        currently: {currently}
+    }));  
     }
     retrieveWeatherApiInformation();
-  }, [search.latitude, search.longitudex]);
+  }, [search.latitude, search.longitude]);
 
   const informationRetrieve = information => {
     if ((information.longitude === null || information.longitude=== undefined || (information.longitude === '' ) 
@@ -46,10 +50,9 @@ function App() {
       message = {'Please, include a country and a city!'}
     />;
   } else {
-    if(search.result != undefined){
-    console.log('xuxa', search.result);
-    component = <Weather
-      result = {search.result}
+      if(search.timezone !== undefined && search.currently !== undefined){    
+        component = <Weather
+        result = {search}
     />
     }
   }
