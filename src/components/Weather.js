@@ -1,4 +1,5 @@
 import React from 'react';
+import Proptypes from 'prop-types';
 
 function Weather({result}) {
     const timezone = result.timezone.response;
@@ -21,6 +22,10 @@ function Weather({result}) {
             </div>
         </div>
     )
+}
+
+Weather.prototype = {
+    result: Proptypes.object.isRequired
 }
 
 export default Weather;

@@ -23,17 +23,18 @@ function App() {
     }
     const retrieveWeatherApiInformation =  async() => {
     
-      const token = '0fdbd6d8806e2911648fdd7cca76599e';
+      const token = '';
       const proxyurl = "https://cors-anywhere.herokuapp.com/";
       const url = `https://api.darksky.net/forecast/${token}/${search.latitude},${search.longitude}`;
       let response = await  axios.get(proxyurl+url).catch(function (error) {
         if (error.response) {
-          if (error.response.status = '400'){
-            saveSearch(search => ({...search, errorNotFound:true}))
+          if (error.response.status === parseInt('400')) {
+            console.log(error.response.status);
+            saveSearch(search => ({...search, errorNotFound:true}));
           }
         }
       });;
-      if (response != undefined) {
+      if (response !== undefined) {
         let currently = response.data.currently;
         response = response.data.timezone;
         saveSearch(search => ({ 

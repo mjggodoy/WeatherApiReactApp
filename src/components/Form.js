@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-
+import Proptypes from 'prop-types';
 
 function Form({informationRetrieve}){   
     
@@ -36,5 +36,9 @@ function Form({informationRetrieve}){
             </div>
         </form>
     );
+}
+
+Form.prototype = {
+    informationRetrieve: Proptypes.object.isRequired
 }
 export default Form;
