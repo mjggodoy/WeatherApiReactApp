@@ -7,8 +7,6 @@ function Weather({result}) {
     const transformFarenheitToCelsius  = (temperature) => {
         return (temperature - 32)*(5/9);
     }
-
-    console.log(currently);
     return(
         <div className="card-panel white col s12">
             <div className="black-text">
